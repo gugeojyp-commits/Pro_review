@@ -35,15 +35,38 @@
       border: 1px solid #E2E8F0;
     }
     h1 { font-size: 1.5rem; color: var(--primary); text-align: center; margin-bottom: 6px; font-weight: 800; }
-    .subtitle { text-align: center; color: var(--gray); font-size: 0.93rem; margin-bottom: 24px; }
-    
+    .subtitle { text-align: center; color: var(--gray); font-size: 0.93rem; margin-bottom: 22px; }
+
+    /* 학생 정보 입력 카드 */
+    .student-info-card {
+      background: #EFF6FF;
+      border: 1.5px solid #BFDBFE;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .student-info-title {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .info-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 480px) {
+      .info-inputs { grid-template-columns: 1fr; }
+    }
+
     /* 첫 화면 메뉴 카드 */
-    .menu-grid { display: flex; flex-direction: column; gap: 14px; }
+    .menu-grid { display: flex; flex-direction: column; gap: 12px; }
     .menu-card {
       background: #F8FAFC;
       border: 1.5px solid #E2E8F0;
       border-radius: 12px;
-      padding: 18px;
+      padding: 16px 18px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: left;
@@ -57,8 +80,8 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08);
     }
-    .menu-card-title { font-size: 1.1rem; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
-    .menu-card-desc { font-size: 0.88rem; color: var(--gray); }
+    .menu-card-title { font-size: 1.06rem; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .menu-card-desc { font-size: 0.86rem; color: var(--gray); }
     .menu-card-badge {
       background: var(--primary);
       color: white;
@@ -70,9 +93,11 @@
       margin-left: 12px;
     }
     .menu-card.all-mode {
-      background: #EFF6FF;
-      border-color: #93C5FD;
+      background: #F0FDF4;
+      border-color: #86EFAC;
     }
+    .menu-card.all-mode .menu-card-title { color: #15803D; }
+    .menu-card.all-mode .menu-card-badge { background: #15803D; }
 
     /* 문제 풀이 영역 */
     .card {
@@ -106,18 +131,18 @@
       line-height: 1.65;
     }
     .q-title { font-size: 1.08rem; font-weight: 700; margin-bottom: 14px; line-height: 1.55; word-break: keep-all; }
-    label { font-weight: 600; font-size: 0.93rem; display: block; margin-bottom: 6px; }
+    label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 5px; }
     input[type="text"], select {
       width: 100%;
-      padding: 11px 12px;
+      padding: 10px 12px;
       border: 1.5px solid var(--border);
       border-radius: 8px;
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       background: white;
       transition: border 0.2s;
     }
     input[type="text"]:focus, select:focus { outline: none; border-color: var(--primary); }
-    
+
     .dual-select-group { display: flex; flex-direction: column; gap: 12px; margin: 10px 0; }
     .btn {
       width: 100%;
@@ -175,7 +200,7 @@
       width: 0%;
       transition: width 0.3s ease;
     }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--gray); font-weight: 600; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; color: var(--gray); font-weight: 600; gap: 8px; flex-wrap: wrap; }
 
     .msg-box {
       padding: 14px;
@@ -216,17 +241,34 @@
 
 <div class="container">
   <h1>📚 [국어] 표준 발음과 음운 변동 복습</h1>
-  <div class="subtitle">원하는 단원을 선택하여 핵심 개념과 발음 원리를 복습하세요!</div>
+  <div class="subtitle">학번과 이름을 입력한 뒤, 복습할 단원을 선택하세요!</div>
 
-  <!-- 1. 첫 화면: 단원 선택 메뉴 -->
+  <!-- 1. 첫 화면: 학생 정보 입력 + 단원 선택 메뉴 -->
   <div id="screen-menu">
+    <div class="student-info-card">
+      <div class="student-info-title">👤 감일고 학생 정보 입력 (복습 참여 및 점수 기록용)</div>
+      <div class="info-inputs">
+        <div>
+          <label for="s_id">학번 (예: 20101)</label>
+          <input type="text" id="s_id" placeholder="학번을 입력하세요">
+        </div>
+        <div>
+          <label for="s_name">이름 (예: 박재연)</label>
+          <input type="text" id="s_name" placeholder="이름을 입력하세요">
+        </div>
+      </div>
+      <div id="intro-warn" class="msg-box msg-error hidden" style="margin-top: 10px; padding: 10px;">
+        ⚠️ 먼저 학번과 이름을 모두 입력해 주세요!
+      </div>
+    </div>
+
     <div class="menu-grid">
       <div class="menu-card" onclick="selectDeck('set1')">
         <div>
           <div class="menu-card-title">1️⃣ 1차시: 표준 발음의 원칙과 받침</div>
           <div class="menu-card-desc">표준 발음의 개념, 'ㅢ/ㅚ/ㅟ/ㅖ' 발음, 홑받침·쌍받침·겹받침의 발음</div>
         </div>
-        <span class="menu-card-badge" id="badge-set1">24문항</span>
+        <span class="menu-card-badge" id="badge-set1">32문항</span>
       </div>
 
       <div class="menu-card" onclick="selectDeck('set2')">
@@ -250,7 +292,7 @@
           <div class="menu-card-title">🔥 전체 통합 복습 (1차시 + 2차시 + 3차시)</div>
           <div class="menu-card-desc">세 단원의 모든 문제를 한 번에 차례대로 복습합니다.</div>
         </div>
-        <span class="menu-card-badge" id="badge-all">총 91문항</span>
+        <span class="menu-card-badge" id="badge-all">총 99문항</span>
       </div>
     </div>
   </div>
@@ -259,6 +301,7 @@
   <div id="screen-quiz" class="hidden">
     <div class="flex-between">
       <button type="button" class="btn btn-sm" onclick="goToMenu()">🏠 단원 선택으로</button>
+      <span id="display-user"></span>
       <span id="display-progress"></span>
     </div>
     <div class="progress-bar-bg">
@@ -311,7 +354,9 @@
     <div style="text-align: center; margin-bottom: 20px;">
       <h2 style="color: var(--primary);" id="result-title">🎉 복습 완료!</h2>
       <h3 style="margin-top: 6px; font-size: 1.15rem;" id="result-score"></h3>
-      <p style="font-size: 0.9rem; color: var(--gray); margin-top: 4px;">수고하셨습니다! 틀린 문제는 오답노트로 한 번 더 확인해 보세요.</p>
+      <p style="font-size: 0.9rem; color: var(--success); font-weight: 700; margin-top: 6px;">
+        ✅ 복습 참여 여부와 점수가 선생님 구글 시트에 자동 저장되었습니다.
+      </p>
     </div>
 
     <div class="tabs">
@@ -336,6 +381,10 @@
 </div>
 
 <script>
+  // 🔗 구글 시트 웹 앱 URL 및 시트 탭 이름 설정
+  const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbymuGKCOqviCjqn3PEab4ubtf_m5cf1Gj184kGTgFqm0nBrOSKX7_oc9V_Wjv73AbGTAA/exec";
+  const SHEET_TAB_NAME = "복습";
+
   // 📜 3차시 활동2(연설문) 공통 지문
   const SPEECH_CONTEXT = `
     <b>[회장 선거 연설문 지문]</b><br>
@@ -349,7 +398,7 @@
   // 📚 통합 문제 데이터베이스 (1차시 + 2차시 + 3차시 Stage 1~3)
   const QUIZ_DECKS = {
     set1: {
-      title: "1차시: 표준 발음의 원칙과 받침",
+      title: "1차시: 표준 발음과 받침",
       categories: {
         "1-1. 표준 발음의 개념과 원칙": [
           { id: "1-1", type: "short", question: "사람마다 발음하는 법이 달라서 [      ]에 지장이 생기는 것을 막기 위해 발음의 표준을 정해 놓은 것을 '표준 발음'이라고 합니다. 빈칸에 들어갈 알맞은 단어를 쓰시오. (띄어쓰기 없이 작성할 것)", answer: "의사소통", explanation: "표준 발음은 국어를 쓰는 사람들 사이에서 발음이 달라 의사소통에 지장이 생기는 것을 막기 위해 정한 약속입니다." },
@@ -392,7 +441,7 @@
       }
     },
     set2: {
-      title: "2차시: 소리의 변동 (동화·된소리·첨가)",
+      title: "2차시: 소리의 변동",
       categories: {
         "2-1. 소리의 동화 (구개음화, 비음화, 유음화)": [
           { id: "2-1", type: "short", question: "음운과 음운이 만날 때, 한 음운이 다른 음운의 영향을 받아 그와 같거나 비슷하게 소리 나는 현상을 [     ]라 한다. 빈칸에 들어갈 올바른 개념을 쓰시오.", answer: "동화", explanation: "한 음운이 인접한 다른 음운의 영향을 받아 비슷하거나 동일하게 바뀌는 음운 변동 현상을 '동화'라고 합니다." },
@@ -440,7 +489,7 @@
       }
     },
     set3: {
-      title: "3차시: 국어 수사대 (활동 1 ~ 활동 2)",
+      title: "3차시: 국어 수사대 (활동 1 ~ 2)",
       categories: {
         "3-1. [활동 1-1] 음운 교체 현상 단어 검거": [
           { id: "3-1", type: "dual", question: "음운의 교체에 해당하는 단어 「꽃」의 표준 발음과 적용 조항을 각각 선택하세요.", p_opts: ["꽃", "꼿", "꼳"], p_ans: "꼳", r_opts: ["제9항(음절끝소리)", "제17항(구개음화)", "제18항(비음화)"], r_ans: "제9항(음절끝소리)", explanation: "받침 'ㅊ'이 어말에서 대표음 [ㄷ]으로 바뀌어 발음되므로 [꼳]이며, 표준 발음법 제9항(음절의 끝소리 규칙)이 적용됩니다." },
@@ -483,12 +532,15 @@
   };
 
   // 애플리케이션 상태 변수
+  let studentId = "";
+  let studentName = "";
   let currentDeckKey = "";
   let activeQuizList = [];
   let currentIndex = 0;
   let attemptStatus = {};
   let wrongQuestions = [];
   let isAnswered = false;
+  let sheetSubmitted = false;
 
   // 초기화: 각 단원 문항 수 뱃지 자동 계산
   window.onload = function() {
@@ -518,11 +570,25 @@
       .replace(/[,\.\/]/g, "");
   }
 
-  // 1. 단원 선택 및 시작
+  // 1. 단원 선택 및 시작 (학번/이름 검증 포함)
   function selectDeck(deckKey) {
-    currentDeckKey = deckKey;
-    let list = [];
+    const idVal = document.getElementById("s_id").value.trim();
+    const nameVal = document.getElementById("s_name").value.trim();
 
+    if (!idVal || !nameVal) {
+      document.getElementById("intro-warn").classList.remove("hidden");
+      if (!idVal) document.getElementById("s_id").focus();
+      else document.getElementById("s_name").focus();
+      return;
+    }
+
+    document.getElementById("intro-warn").classList.add("hidden");
+    studentId = idVal;
+    studentName = nameVal;
+    currentDeckKey = deckKey;
+    sheetSubmitted = false;
+
+    let list = [];
     const keysToLoad = deckKey === "all" ? ["set1", "set2", "set3"] : [deckKey];
     keysToLoad.forEach(k => {
       for (const [category, items] of Object.entries(QUIZ_DECKS[k].categories)) {
@@ -555,11 +621,12 @@
     const q = activeQuizList[currentIndex];
     const total = activeQuizList.length;
 
-    document.getElementById("display-progress").innerHTML = `🎯 <b>진행:</b> ${currentIndex + 1} / ${total} 문항`;
+    document.getElementById("display-user").innerHTML = `👤 <b>${studentName}</b> (${studentId})`;
+    document.getElementById("display-progress").innerHTML = `🎯 <b>진행:</b> ${currentIndex + 1} / ${total}`;
     document.getElementById("progress-bar").style.width = `${((currentIndex + 1) / total) * 100}%`;
 
     document.getElementById("q-category").innerText = `📌 ${q.category}`;
-    
+
     const ctxBox = document.getElementById("q-context");
     if (q.context) {
       ctxBox.innerHTML = q.context;
@@ -647,7 +714,6 @@
       userAnsDisplay = userAns;
       const cleanedUser = cleanSingle(userAns);
 
-      // 복수 정답을 모두 적어야 하는 문항(3-14 건의, 3-28 되어) 예외 처리
       if (q.id === "3-14") {
         isCorrect = cleanedUser.includes("거늬") && cleanedUser.includes("거니");
         correctAnsDisplay = "거늬, 거니";
@@ -707,13 +773,11 @@
       msgBox.innerHTML = `❌ <b>오답입니다.</b><br>· 내가 쓴 답: ${userAnsDisplay}<br>· 실제 정답: <b>${correctAnsDisplay}</b>`;
     }
 
-    // 맞히든 틀리든 해설은 항상 표시
     expBox.innerHTML = `💡 <b>교과서 원리 해설:</b><br>${q.explanation}`;
 
-    // 마지막 문제 여부에 따라 버튼 문구 변경
     btnNext.innerText = (currentIndex < activeQuizList.length - 1)
       ? "➡️ 다음 문제로 이동 (Enter)"
-      : "🏁 결과 및 오답노트 확인하기 (Enter)";
+      : "🏁 결과 제출 및 오답노트 확인 (Enter)";
     btnNext.focus();
   }
 
@@ -726,7 +790,7 @@
     }
   }
 
-  // 4. 결과 화면 및 오답노트
+  // 4. 결과 화면 및 구글 시트 기록 전송
   function finishQuiz() {
     document.getElementById("screen-quiz").classList.add("hidden");
     document.getElementById("screen-result").classList.remove("hidden");
@@ -734,10 +798,32 @@
     wrongQuestions = activeQuizList.filter(q => attemptStatus[q.id] === false);
     const totalCount = activeQuizList.length;
     const correctCount = totalCount - wrongQuestions.length;
+    const wrongIdsStr = wrongQuestions.length > 0 ? wrongQuestions.map(q => q.id).join(", ") : "없음";
 
     const deckTitle = currentDeckKey === "all" ? "전체 통합 복습" : QUIZ_DECKS[currentDeckKey].title;
-    document.getElementById("result-title").innerText = `🎉 [${deckTitle}] 복습 완료!`;
+    document.getElementById("result-title").innerText = `🎉 ${studentName} 님, [${deckTitle}] 완료!`;
     document.getElementById("result-score").innerText = `총 ${totalCount}문항 중 ${correctCount}개 정답 (${Math.round((correctCount / totalCount) * 100)}점)`;
+
+    // 🚀 구글 시트 비동기 전송 (최초 완료 시 1회 전송)
+    if (studentId && !sheetSubmitted && GOOGLE_SHEET_WEBAPP_URL.startsWith("https://script.google.com")) {
+      sheetSubmitted = true;
+      const payload = {
+        sheet_name: SHEET_TAB_NAME,
+        round: deckTitle,
+        student_id: studentId,
+        student_name: studentName,
+        score: correctCount,
+        total: totalCount,
+        wrong_questions: wrongIdsStr
+      };
+
+      fetch(GOOGLE_SHEET_WEBAPP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
 
     const wrongBox = document.getElementById("wrong-summary-box");
     const retryBtn = document.getElementById("btn-retry-wrong");
@@ -745,7 +831,7 @@
     if (wrongQuestions.length > 0) {
       wrongBox.innerHTML = `
         <h4 style="color: var(--error); margin-bottom: 8px;">⚠️ 틀렸던 문제가 <b>${wrongQuestions.length}개</b> 있습니다.</h4>
-        <p style="font-size: 0.92rem; color: var(--text);">아래 버튼을 눌러 틀린 문제만 집중적으로 다시 복습해 보세요!</p>
+        <p style="font-size: 0.92rem; color: var(--text);">오답 문항 ID: <b>${wrongIdsStr}</b></p>
       `;
       retryBtn.classList.remove("hidden");
     } else {
